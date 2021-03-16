@@ -15,6 +15,12 @@ class Perceptron(object):
     def __str__(self) -> str:
         return "weights: %s, bias: %s" % (self.weights, self.bias)
 
+    def predict(self, input_vec):
+        list1 = [x * w for x,w in zip(input_vec, self.weights)] 
+        val = reduce(lambda x, y: x + y , list1, 0.0)
+        output = self.activator(val + self.bias)
+        return output
+
     def train(self, input_vecs, labels, iteration, rate):
 
         # 负责迭代，
@@ -24,33 +30,15 @@ class Perceptron(object):
 
             # 开始一次迭代
             for (input_vec, label) in samples:
-                print("input_vec: ", input_vec, "label: ", label, "weights: ", self.weights)
-
                 # 输出这一次计算出的权重weights
-                zip1 = zip(input_vec, self.weights)
-                print("zip1: ", list(zip1))
-
-                # map1 = map (lambda (x, w): x * w, zip1)
-                # map1 = map(lambda x: x[0] * x[1], zip1)
-                list1 = [x * w for x,w in zip1] #这里用zip1就会出问题
-                print("list1: ", list1)
-
-                val = reduce(lambda x, y: x + y , list1, 0.0)
-                print("val: ", val)
-
-                output = self.activator(val + self.bias)
-                print("bias: ", self.bias)
-                print("output: ", output)
+                output = self.predict(input_vec=input_vec)
 
                 # 更新权重
                 delta = label - output
-                zip2 = zip(input_vec, self.weights)
-                self.weights = list(map(lambda x: x[1] + rate * delta * x[0], zip2))
+                self.weights = [w + rate * delta * x for x,w in zip(input_vec, self.weights)]
                 
                 # 更新bias
                 self.bias += rate * delta
-
-                print("\n")
 
 
 if __name__ == "__main__":
@@ -64,6 +52,12 @@ if __name__ == "__main__":
 
     p = Perceptron(input_num=input_num, activator=activator)
     p.train(input_vecs=input_vecs, labels=labels, iteration=iteration, rate=rate)
+    print(p)
+    print ('1 and 1 = %d' % p.predict([1, 1]))
+    print ('0 and 0 = %d' % p.predict([0, 0]))
+    print ('1 and 0 = %d' % p.predict([1, 0]))
+    print ('0 and 1 = %d' % p.predict([0, 1]))
+
 
     
 
