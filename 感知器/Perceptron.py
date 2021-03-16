@@ -50,6 +50,7 @@ if __name__ == "__main__":
     iteration = 10
     rate = 0.1
 
+    print("and: ")
     p = Perceptron(input_num=input_num, activator=activator)
     p.train(input_vecs=input_vecs, labels=labels, iteration=iteration, rate=rate)
     print(p)
@@ -57,6 +58,16 @@ if __name__ == "__main__":
     print ('0 and 0 = %d' % p.predict([0, 0]))
     print ('1 and 0 = %d' % p.predict([1, 0]))
     print ('0 and 1 = %d' % p.predict([0, 1]))
+
+    print("or: ")
+    q = Perceptron(input_num=input_num, activator=activator)
+    q.train(input_vecs=input_vecs, labels=[1, 0, 1, 1], iteration=iteration, rate=rate)
+    print(q)
+    print ('1 and 1 = %d' % q.predict([1, 1]))
+    print ('0 and 0 = %d' % q.predict([0, 0]))
+    print ('1 and 0 = %d' % q.predict([1, 0]))
+    print ('0 and 1 = %d' % q.predict([0, 1]))
+
 
 
     
